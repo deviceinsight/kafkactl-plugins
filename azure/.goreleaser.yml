@@ -1,0 +1,82 @@
+project_name: kafkactl-azure-plugin
+
+before:
+  hooks:
+    - go mod download
+builds:
+  - env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X main.Version={{.Tag}} -X main.GitCommit={{.ShortCommit}} -X main.BuildTime={{.Date}}
+    goos:
+      - darwin
+      - linux
+      - windows
+
+archives:
+  - id: default
+    files:
+      - LICENSE.md
+      - CHANGELOG.md
+
+checksum:
+  name_template: 'checksums.txt'
+nfpms:
+  - id: default
+    vendor: Device Insight GmbH
+    homepage: https://www.device-insight.com/
+    maintainer: Dirk Wilden <[dirk.wilden@device-insight.com]>
+    description: Azure Plugin for kafkactl
+    license: Apache 2.0
+
+    formats:
+      - deb
+      - rpm
+
+release:
+  disable: false
+  draft: false
+
+brews:
+  -
+    tap:
+      owner: deviceinsight
+      name: homebrew-packages
+
+    commit_author:
+      name: goreleaserbot
+      email: goreleaser@device-insight.com
+
+    folder: Formula
+
+    homepage: https://www.device-insight.com/
+
+    description: Azure Plugin for kafkactl
+    skip_upload: false
+
+dockers:
+  -
+    skip_push: false
+    dockerfile: Dockerfile.Ubuntu
+    build_flag_templates:
+      - "--build-arg=KAFKACTL_VERSION={{ .Env.KAFKACTL_VERSION }}"
+    image_templates:
+      - "deviceinsight/kafkactl-azure:latest-ubuntu"
+      - "deviceinsight/kafkactl-azure:{{ .Tag }}-ubuntu"
+      - "deviceinsight/kafkactl-azure:latest"
+      - "deviceinsight/kafkactl-azure:{{ .Tag }}"
+  -
+    skip_push: false
+    dockerfile: Dockerfile.Scratch
+    build_flag_templates:
+      - "--build-arg=KAFKACTL_VERSION={{ .Env.KAFKACTL_VERSION }}"
+    image_templates:
+      - "deviceinsight/kafkactl-azure:latest-scratch"
+      - "deviceinsight/kafkactl-azure:{{ .Tag }}-scratch"
+
+publishers:
+  - name: aur-azure
+    env:
+      - AUR_SSH_PRIVATE_KEY={{ .Env.AUR_SSH_PRIVATE_KEY }}
+    cmd: |
+      .github/aur/azure/publish.sh {{ .Version }}

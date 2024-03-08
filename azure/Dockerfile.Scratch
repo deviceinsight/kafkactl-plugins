@@ -1,0 +1,4 @@
+ARG KAFKACTL_VERSION
+FROM deviceinsight/kafkactl:${KAFKACTL_VERSION}-scratch
+COPY kafkactl-azure-plugin /
+ENTRYPOINT ["/kafkactl"]

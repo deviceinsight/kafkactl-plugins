@@ -1,0 +1,60 @@
+= Azure Plugin
+
+The kafkactl azure plugin allows to configure kafkactl to use an azure oauth credential flow for login.
+This allows to perform passwordless logins with Azure EventHubs.
+
+== Installation
+
+TBD
+
+== Configuration
+
+=== Minimal
+
+The minimal kafkactl configuration needed to use this plugin looks as follows:
+
+[source,yaml]
+----
+contexts:
+    my-context:
+        brokers:
+            - my-eventhub-namespace.servicebus.windows.net:9093
+        sasl:
+            enabled: true
+            mechanism: oauth
+            tokenprovider:
+                plugin: azure
+        tls:
+            enabled: true
+----
+
+=== AKS Cluster with managed identity
+
+If you are unable to access the eventhub namespace from your local machine, but only from within an AKS cluster,
+you can create a https://learn.microsoft.com/en-us/azure/aks/use-managed-identity[managed identity] and assign the
+managed identity a role with rights to your eventhub.
+
+Then you can configure kafkactl as follows:
+
+[source,yaml]
+----
+contexts:
+    my-context-k8s:
+        brokers:
+            - my-eventhub-namespace.servicebus.windows.net:9093
+        kubernetes:
+            enabled: true
+            image: deviceinsight/kafkactl-azure:1.0.0
+            kubecontext: my-aks-cluster
+            namespace: aks-namespace
+            serviceaccount: managed-identity
+            labels:
+                azure.workload.identity/use: "true"
+        sasl:
+            enabled: true
+            mechanism: oauth
+            tokenprovider:
+                plugin: azure
+        tls:
+            enabled: true
+----

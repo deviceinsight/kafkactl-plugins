@@ -9,6 +9,7 @@
 
 ### Binary
 kafkactl-*-plugin
+dist
 
 ### logs
 *.log

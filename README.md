@@ -1,2 +1,0 @@
-# kafkactl plugins
-

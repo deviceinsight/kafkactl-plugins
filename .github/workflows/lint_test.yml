@@ -1,0 +1,32 @@
+name: Lint / Test / IT
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+  pull_request:
+
+jobs:
+  azure-lint:
+    name: azure-lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          working-directory: azure
+
+  azure-test:
+    name: azure-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.22'
+      - name: Run Unit tests
+        run: make test
+        working-directory: ./azure

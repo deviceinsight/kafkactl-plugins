@@ -1,0 +1,5 @@
+= Plugins for kafkactl
+
+include::azure/README.adoc[leveloffset=+1]
+
+

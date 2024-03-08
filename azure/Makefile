@@ -1,31 +1,47 @@
 BUILD_TS := $(shell date -Iseconds --utc)
 COMMIT_SHA := $(shell git rev-parse HEAD)
-VERSION := $(shell git describe --abbrev=0 --tags)
+VERSION := $(shell git describe --abbrev=0 --tags || echo "latest")
 
-export CGO_ENABLED=1
+export CGO_ENABLED=0
 export GOOS=linux
 export GO111MODULE=on
 
-FILES := $(shell find . -name '*.go' -type f -not -name '*.pb.go' -not -name '*_generated.go' -not -name '*_test.go')
-TESTS := $(shell find . -name '*.go' -type f -not -name '*.pb.go' -not -name '*_generated.go' -name '*_test.go')
+program=kafkactl-azure-plugin
+ld_flags := "-X main.Version=$(VERSION) -X main.GitCommit=$(COMMIT_SHA) -X main.BuildTime=$(BUILD_TS)"
+
+FILES    := $(shell find . -name '*.go' -type f -not -name '*.pb.go' -not -name '*_generated.go' -not -name '*_test.go')
+TESTS    := $(shell find . -name '*.go' -type f -not -name '*.pb.go' -not -name '*_generated.go' -name '*_test.go')
 
 .DEFAULT_GOAL := all
 .PHONY: all
-all: fmt build build-debug
+all: fmt lint cve-check test build
 
 fmt:
 	gofmt -s -l -w $(FILES) $(TESTS)
 	goimports -l -w $(FILES) $(TESTS)
 
+.PHONY: update-dependencies
+update-dependencies: # update dependencies to latest MINOR.PATCH
+	go get -t -u ./...
+
+lint:
+	golangci-lint run
+
+.PHONY: cve-check
+cve-check:
+	echo WARNING: govulncheck is disabled because it segfaults
+	#govulncheck ./...
+
+.PHONY: test
+test:
+	rm -f test.log
+	go test -v -short ./...
+
 .PHONY: build
 build:
-	go build -buildmode=plugin -o kafkactl-azure-plugin.so
-
-.PHONY: build-debug
-build-debug:
-	go build -buildmode=plugin -gcflags="all=-N -l" -o kafkactl-azure-plugin_debug.so
+	go build -ldflags $(ld_flags) -o $(program)
 
 .PHONY: clean
 clean:
-	rm -f kafkactl-azure-plugin.so
+	rm -f $(program)
 	go clean -testcache
