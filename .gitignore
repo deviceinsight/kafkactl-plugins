@@ -1,0 +1,17 @@
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### Visual Studio Code
+.vscode
+
+### Binary
+kafkactl-*-plugin
+
+### logs
+*.log
+
+
+
