@@ -48,9 +48,9 @@ func (t *tokenProvider) Init(options map[string]any, brokers []string) (err erro
 		return fmt.Errorf("unable to parse bootstrapServer: %w", err)
 	}
 
-	tenantId, ok := options["tenantid"].(string)
+	tenantID, ok := options["tenantid"].(string)
 	if !ok {
-		tenantId = ""
+		tenantID = ""
 	}
 
 	t.tokenAudience = fmt.Sprintf("%s://%s/.default", eventhubURL.Scheme, eventhubURL.Hostname())
@@ -59,7 +59,7 @@ func (t *tokenProvider) Init(options map[string]any, brokers []string) (err erro
 		ClientOptions:              azcore.ClientOptions{},
 		AdditionallyAllowedTenants: nil,
 		DisableInstanceDiscovery:   false,
-		TenantID:                   tenantId,
+		TenantID:                   tenantID,
 	})
 	if err != nil {
 		return fmt.Errorf("failed to get default credential: %w", err)
