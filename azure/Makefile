@@ -51,7 +51,7 @@ clean:
 # manually executing goreleaser:
 # export GITHUB_TOKEN=xyz
 # export AUR_SSH_PRIVATE_KEY=$(cat /path/to/id_aur)
-# snapcraft login
+# export KAFKACTL_VERSION=v5.0.3
 # docker login
 # goreleaser --clean (--skip-validate)
 #

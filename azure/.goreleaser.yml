@@ -72,9 +72,9 @@ dockers:
       - "deviceinsight/kafkactl-azure:latest-{{ .Env.KAFKACTL_VERSION }}-scratch"
       - "deviceinsight/kafkactl-azure:{{ .Tag }}-{{ .Env.KAFKACTL_VERSION }}-scratch"
 
-publishers:
-  - name: aur-azure
-    env:
-      - AUR_SSH_PRIVATE_KEY={{ .Env.AUR_SSH_PRIVATE_KEY }}
-    cmd: |
-      .github/aur/azure/publish.sh {{ .Version }}
+#publishers:
+#  - name: aur-azure
+#    env:
+#      - AUR_SSH_PRIVATE_KEY={{ .Env.AUR_SSH_PRIVATE_KEY }}
+#    cmd: |
+#      .github/aur/azure/publish.sh {{ .Version }}

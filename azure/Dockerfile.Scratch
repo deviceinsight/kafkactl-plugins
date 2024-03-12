@@ -1,4 +1,4 @@
 ARG KAFKACTL_VERSION
 FROM deviceinsight/kafkactl:${KAFKACTL_VERSION}-scratch
-COPY kafkactl-azure-plugin /
+COPY kafkactl-azure-plugin /usr/local/bin
 ENTRYPOINT ["/kafkactl"]
