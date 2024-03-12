@@ -45,3 +45,21 @@ build:
 clean:
 	rm -f $(program)
 	go clean -testcache
+
+# usage make version=1.0.0 release
+#
+# manually executing goreleaser:
+# export GITHUB_TOKEN=xyz
+# export AUR_SSH_PRIVATE_KEY=$(cat /path/to/id_aur)
+# snapcraft login
+# docker login
+# goreleaser --clean (--skip-validate)
+#
+.PHONY: release
+release:
+	current_date=`date "+%Y-%m-%d"`; eval "sed -i 's/## \[Unreleased\].*/## [Unreleased]\n\n## $$version - $$current_date/g' CHANGELOG.md"
+	git add "CHANGELOG.md"
+	git commit -m "releases $(version)"
+	git tag -a v$(version) -m "release v$(version)"
+	git push origin
+	git push origin v$(version)
