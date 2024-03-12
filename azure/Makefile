@@ -51,7 +51,7 @@ clean:
 # manually executing goreleaser:
 # export GITHUB_TOKEN=xyz
 # export AUR_SSH_PRIVATE_KEY=$(cat /path/to/id_aur)
-# export KAFKACTL_VERSION=v5.0.3
+# export KAFKACTL_VERSION=v5.0.4
 # docker login
 # goreleaser --clean (--skip-validate)
 #
