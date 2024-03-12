@@ -51,6 +51,9 @@ brews:
 
     homepage: https://www.device-insight.com/
 
+    dependencies:
+      - name: kafkactl
+
     description: Azure Plugin for kafkactl
     skip_upload: false
 
