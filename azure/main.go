@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/deviceinsight/kafkactl/v5/pkg/plugins"
 	"github.com/deviceinsight/kafkactl/v5/pkg/plugins/auth"
 	"github.com/hashicorp/go-hclog"
 )
@@ -112,7 +111,7 @@ func main() {
 	plugin.Serve(&plugin.ServeConfig{
 		HandshakeConfig: auth.TokenProviderPluginSpec.Handshake,
 		Plugins: map[string]plugin.Plugin{
-			plugins.GenericInterfaceIdentifier: &auth.TokenProviderPlugin{Impl: tokenProvider},
+			auth.TokenProviderPluginSpec.InterfaceIdentifier: &auth.TokenProviderPlugin{Impl: tokenProvider},
 		},
 	})
 }
