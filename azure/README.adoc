@@ -44,7 +44,7 @@ contexts:
             - my-eventhub-namespace.servicebus.windows.net:9093
         kubernetes:
             enabled: true
-            image: deviceinsight/kafkactl-azure:latest-v5.0.5
+            image: deviceinsight/kafkactl-azure:latest-v5.0.6
             kubecontext: my-aks-cluster
             namespace: aks-namespace
             serviceaccount: managed-identity

@@ -5,7 +5,7 @@ go 1.22.1
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.10.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.5.1
-	github.com/deviceinsight/kafkactl/v5 v5.0.5
+	github.com/deviceinsight/kafkactl/v5 v5.0.6
 	github.com/hashicorp/go-hclog v1.6.2
 	github.com/hashicorp/go-plugin v1.6.0
 )
@@ -34,4 +34,4 @@ require (
 	google.golang.org/protobuf v1.33.0 // indirect
 )
 
-//replace github.com/deviceinsight/kafkactl/v5 v5.0.5 => ../../kafkactl
+//replace github.com/deviceinsight/kafkactl/v5 v5.0.6 => ../../kafkactl
