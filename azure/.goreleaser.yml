@@ -15,6 +15,9 @@ builds:
 
 archives:
   - id: default
+    format_overrides:
+      - goos: windows
+        format: zip
     files:
       - LICENSE.md
       - CHANGELOG.md
@@ -56,6 +59,25 @@ brews:
 
     description: Azure Plugin for kafkactl
     skip_upload: false
+
+winget:
+  - name: kafkactl-azure-plugin
+    publisher: deviceinsight
+    short_description: Azure Plugin for kafkactl
+    license: Apache-2.0
+    publisher_support_url: https://github.com/deviceinsight/kafkactl-plugins/issues
+    package_identifier: deviceinsight.kafkactl-azure-plugin
+    homepage: https://www.device-insight.com/
+    repository:
+      owner: deviceinsight
+      name: winget-pkgs
+      branch: "kafkactl-azure-plugin-{{.Version}}"
+      pull_request:
+        enabled: true
+        base:
+          owner: microsoft
+          name: winget-pkgs
+          branch: master
 
 dockers:
   -
