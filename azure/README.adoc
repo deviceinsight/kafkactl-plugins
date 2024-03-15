@@ -5,7 +5,36 @@ This allows to perform passwordless logins with Azure EventHubs.
 
 == Installation
 
-TBD
+You can install the pre-compiled binary or compile from source.
+
+=== Install the pre-compiled binary
+
+*homebrew*:
+
+[,bash]
+----
+# install tap repostory once
+brew tap deviceinsight/packages
+# install
+brew kafkactl-azure-plugin
+# upgrade
+brew upgrade kafkactl-azure-plugin
+----
+
+*deb/rpm*:
+
+Download the .deb or .rpm from the https://github.com/deviceinsight/kafkactl-plugins/releases[releases page] and install with dpkg -i and rpm -i respectively.
+
+*manually*:
+
+Download the pre-compiled binaries from the https://github.com/deviceinsight/kafkactl-plugins/releases[releases page] and copy to the desired location.
+
+=== Compiling from source
+
+[,bash]
+----
+go get -u github.com/deviceinsight/kafkactl-plugins/azure
+----
 
 == Configuration
 
