@@ -21,6 +21,12 @@ brew kafkactl-azure-plugin
 brew upgrade kafkactl-azure-plugin
 ----
 
+*winget*:
+[,bash]
+----
+winget install kafkactl-azure-plugin
+----
+
 *deb/rpm*:
 
 Download the .deb or .rpm from the https://github.com/deviceinsight/kafkactl-plugins/releases[releases page] and install with dpkg -i and rpm -i respectively.
@@ -84,6 +90,61 @@ contexts:
             mechanism: oauth
             tokenprovider:
                 plugin: azure
+        tls:
+            enabled: true
+----
+
+== Options
+
+
+|===
+|Option | Type | Description
+
+|tenant-id
+|string
+|configure a fixed tenant
+
+|verbose
+|boolean
+|enable verbose logging
+
+|az-events
+|comma separated list
+|type of events to log (`Request`, `Response`, `ResponseError`, `Retry`)
+
+|log-body
+|boolean
+|log body of requests
+
+|log-headers
+|comma separated list
+|list of headers to be logged
+
+|log-query-params
+|comma separated list
+|list of queryParams to be logged
+|===
+
+Example with all options configured:
+
+[source,yaml]
+----
+contexts:
+    my-context:
+        brokers:
+            - my-eventhub-namespace.servicebus.windows.net:9093
+        sasl:
+            enabled: true
+            mechanism: oauth
+            tokenprovider:
+                plugin: azure
+                options:
+                    tenant-id: my-tenant-id
+                    verbose: true
+                    az-events: Request,Response
+                    log-query-params: resource
+                    log-headers: Metadata
+                    log-body: true
         tls:
             enabled: true
 ----

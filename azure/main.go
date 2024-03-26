@@ -6,9 +6,12 @@ import (
 	"net/url"
 	"os"
 	"regexp"
+	"strings"
 	"time"
 
 	"github.com/hashicorp/go-plugin"
+
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -22,10 +25,11 @@ var BuildTime string
 var GitCommit string
 
 type tokenProvider struct {
-	logger        hclog.Logger
-	tokenAudience string
-	credential    *azidentity.DefaultAzureCredential
-	token         azcore.AccessToken
+	logger         hclog.Logger
+	tokenAudience  string
+	credential     *azidentity.DefaultAzureCredential
+	token          azcore.AccessToken
+	loggingOptions policy.LogOptions
 }
 
 // Init initializes the tokenProvider with the provided clientID and clientSecret.
@@ -33,6 +37,8 @@ type tokenProvider struct {
 func (t *tokenProvider) Init(options map[string]any, brokers []string) (err error) {
 
 	t.logger.Debug("init", "options", options)
+
+	t.configureLogging(options)
 
 	if len(brokers) != 1 {
 		return fmt.Errorf("expected exactly 1 broker. got %d", len(brokers))
@@ -47,7 +53,7 @@ func (t *tokenProvider) Init(options map[string]any, brokers []string) (err erro
 		return fmt.Errorf("unable to parse bootstrapServer: %w", err)
 	}
 
-	tenantID, ok := options["tenantid"].(string)
+	tenantID, ok := options["tenant-id"].(string)
 	if !ok {
 		tenantID = ""
 	}
@@ -55,7 +61,9 @@ func (t *tokenProvider) Init(options map[string]any, brokers []string) (err erro
 	t.tokenAudience = fmt.Sprintf("%s://%s/.default", eventhubURL.Scheme, eventhubURL.Hostname())
 
 	credential, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
-		ClientOptions:              azcore.ClientOptions{},
+		ClientOptions: azcore.ClientOptions{
+			Logging: t.loggingOptions,
+		},
 		AdditionallyAllowedTenants: nil,
 		DisableInstanceDiscovery:   false,
 		TenantID:                   tenantID,
@@ -68,6 +76,48 @@ func (t *tokenProvider) Init(options map[string]any, brokers []string) (err erro
 
 	t.logger.Debug("plugin initialized")
 	return nil
+}
+
+func (t *tokenProvider) configureLogging(options map[string]any) {
+
+	verbose, ok := options["verbose"].(bool)
+	if !ok || !verbose {
+		return
+	}
+
+	azEvents, ok := options["az-events"].(string)
+	if !ok {
+		return
+	}
+
+	t.logger.Debug("verbose enabled", "azEvents", azEvents)
+
+	logBody, ok := options["log-body"].(bool)
+	if ok && logBody {
+		t.loggingOptions.IncludeBody = true
+	}
+
+	logHeaders, ok := options["log-headers"].(string)
+	if ok {
+		t.loggingOptions.AllowedHeaders = strings.Split(logHeaders, ",")
+	}
+
+	logQueryParams, ok := options["log-query-params"].(string)
+	if ok {
+		t.loggingOptions.AllowedQueryParams = strings.Split(logQueryParams, ",")
+	}
+
+	azlog.SetListener(func(event azlog.Event, message string) {
+		t.logger.Debug(message, "event", event)
+	})
+
+	var events []azlog.Event
+
+	for _, event := range strings.Split(azEvents, ",") {
+		events = append(events, azlog.Event(event))
+	}
+
+	azlog.SetEvents(events...)
 }
 
 // Token returns a new accessToken or an error as appropriate.
