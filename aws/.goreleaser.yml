@@ -1,0 +1,101 @@
+project_name: kafkactl-aws-plugin
+
+before:
+  hooks:
+    - go mod download
+builds:
+  - env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X main.Version={{.Tag}} -X main.GitCommit={{.ShortCommit}} -X main.BuildTime={{.Date}}
+    goos:
+      - darwin
+      - linux
+      - windows
+
+archives:
+  - id: default
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE.md
+      - CHANGELOG.md
+
+checksum:
+  name_template: "checksums.txt"
+nfpms:
+  - id: default
+    vendor: Device Insight GmbH
+    homepage: https://www.device-insight.com/
+    maintainer: Dirk Wilden <[dirk.wilden@device-insight.com]>
+    description: AWS Plugin for kafkactl
+    license: Apache 2.0
+
+    formats:
+      - deb
+      - rpm
+
+release:
+  disable: false
+  draft: false
+
+brews:
+  - tap:
+      owner: deviceinsight
+      name: homebrew-packages
+
+    commit_author:
+      name: goreleaserbot
+      email: goreleaser@device-insight.com
+
+    folder: Formula
+
+    homepage: https://www.device-insight.com/
+
+    dependencies:
+      - name: kafkactl
+
+    description: aws Plugin for kafkactl
+    skip_upload: false
+
+winget:
+  - name: kafkactl-aws-plugin
+    publisher: deviceinsight
+    short_description: AWS Plugin for kafkactl
+    license: Apache-2.0
+    publisher_support_url: https://github.com/deviceinsight/kafkactl-plugins/issues
+    package_identifier: deviceinsight.kafkactl-aws-plugin
+    homepage: https://www.device-insight.com/
+    repository:
+      owner: deviceinsight
+      name: winget-pkgs
+      branch: "kafkactl-aws-plugin-{{.Version}}"
+      pull_request:
+        enabled: true
+        base:
+          owner: microsoft
+          name: winget-pkgs
+          branch: master
+
+dockers:
+  - skip_push: false
+    dockerfile: Dockerfile.Ubuntu
+    build_flag_templates:
+      - "--build-arg=KAFKACTL_VERSION={{ .Env.KAFKACTL_VERSION }}"
+    image_templates:
+      - "deviceinsight/kafkactl-aws:latest-{{ .Env.KAFKACTL_VERSION }}-ubuntu"
+      - "deviceinsight/kafkactl-aws:{{ .Tag }}-{{ .Env.KAFKACTL_VERSION }}-ubuntu"
+  - skip_push: false
+    dockerfile: Dockerfile.Scratch
+    build_flag_templates:
+      - "--build-arg=KAFKACTL_VERSION={{ .Env.KAFKACTL_VERSION }}"
+    image_templates:
+      - "deviceinsight/kafkactl-aws:latest-{{ .Env.KAFKACTL_VERSION }}-scratch"
+      - "deviceinsight/kafkactl-aws:{{ .Tag }}-{{ .Env.KAFKACTL_VERSION }}-scratch"
+#publishers:
+#  - name: aur-aws
+#    env:
+#      - AUR_SSH_PRIVATE_KEY={{ .Env.AUR_SSH_PRIVATE_KEY }}
+#    cmd: |
+#      .github/aur/aws/publish.sh {{ .Version }}
