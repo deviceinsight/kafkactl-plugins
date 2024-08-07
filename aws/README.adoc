@@ -60,7 +60,8 @@ contexts:
             mechanism: oauth
             tokenprovider:
                 plugin: aws
-                region: eu-west-1
+                options:
+                  region: eu-west-1
         tls:
             enabled: true
 ----
