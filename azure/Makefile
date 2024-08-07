@@ -29,8 +29,7 @@ lint:
 
 .PHONY: cve-check
 cve-check:
-	echo WARNING: govulncheck is disabled because it segfaults
-	#govulncheck ./...
+	govulncheck ./...
 
 .PHONY: test
 test:
