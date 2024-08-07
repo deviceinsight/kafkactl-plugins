@@ -1,4 +1,4 @@
-project_name: kafkactl-azure-plugin
+project_name: kafkactl-aws-plugin
 
 before:
   hooks:
@@ -29,7 +29,7 @@ nfpms:
     vendor: Device Insight GmbH
     homepage: https://www.device-insight.com/
     maintainer: Dirk Wilden <[dirk.wilden@device-insight.com]>
-    description: Azure Plugin for kafkactl
+    description: AWS Plugin for kafkactl
     license: Apache 2.0
 
     formats:
@@ -56,21 +56,21 @@ brews:
     dependencies:
       - name: kafkactl
 
-    description: Azure Plugin for kafkactl
+    description: AWS Plugin for kafkactl
     skip_upload: false
 
 winget:
-  - name: kafkactl-azure-plugin
+  - name: kafkactl-aws-plugin
     publisher: deviceinsight
-    short_description: Azure Plugin for kafkactl
+    short_description: AWS Plugin for kafkactl
     license: Apache-2.0
     publisher_support_url: https://github.com/deviceinsight/kafkactl-plugins/issues
-    package_identifier: deviceinsight.kafkactl-azure-plugin
+    package_identifier: deviceinsight.kafkactl-aws-plugin
     homepage: https://www.device-insight.com/
     repository:
       owner: deviceinsight
       name: winget-pkgs
-      branch: "kafkactl-azure-plugin-{{.Version}}"
+      branch: "kafkactl-aws-plugin-{{.Version}}"
       pull_request:
         enabled: true
         base:
@@ -84,19 +84,18 @@ dockers:
     build_flag_templates:
       - "--build-arg=KAFKACTL_VERSION={{ .Env.KAFKACTL_VERSION }}"
     image_templates:
-      - "deviceinsight/kafkactl-azure:latest-{{ .Env.KAFKACTL_VERSION }}-ubuntu"
-      - "deviceinsight/kafkactl-azure:{{ .Tag }}-{{ .Env.KAFKACTL_VERSION }}-ubuntu"
+      - "deviceinsight/kafkactl-aws:latest-{{ .Env.KAFKACTL_VERSION }}-ubuntu"
+      - "deviceinsight/kafkactl-aws:{{ .Tag }}-{{ .Env.KAFKACTL_VERSION }}-ubuntu"
   - skip_push: false
     dockerfile: Dockerfile.Scratch
     build_flag_templates:
       - "--build-arg=KAFKACTL_VERSION={{ .Env.KAFKACTL_VERSION }}"
     image_templates:
-      - "deviceinsight/kafkactl-azure:latest-{{ .Env.KAFKACTL_VERSION }}-scratch"
-      - "deviceinsight/kafkactl-azure:{{ .Tag }}-{{ .Env.KAFKACTL_VERSION }}-scratch"
-
+      - "deviceinsight/kafkactl-aws:latest-{{ .Env.KAFKACTL_VERSION }}-scratch"
+      - "deviceinsight/kafkactl-aws:{{ .Tag }}-{{ .Env.KAFKACTL_VERSION }}-scratch"
 #publishers:
-#  - name: aur-azure
+#  - name: aur-aws
 #    env:
 #      - AUR_SSH_PRIVATE_KEY={{ .Env.AUR_SSH_PRIVATE_KEY }}
 #    cmd: |
-#      .github/aur/azure/publish.sh {{ .Version }}
+#      .github/aur/aws/publish.sh {{ .Version }}

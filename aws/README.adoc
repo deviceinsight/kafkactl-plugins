@@ -1,0 +1,146 @@
+= AWS Plugin
+
+The kafkactl aws plugin allows to configure kafkactl to use an AWS oauth credential flow for login.
+This allows to perform passwordless logins with AWS IAMs.
+
+== Installation
+
+You can install the pre-compiled binary or compile from source.
+
+=== Install the pre-compiled binary
+
+*homebrew*:
+
+[,bash]
+----
+# install tap repository once
+brew tap deviceinsight/packages
+# install
+brew kafkactl-aws-plugin
+# upgrade
+brew upgrade kafkactl-aws-plugin
+----
+
+*winget*:
+[,bash]
+----
+winget install kafkactl-aws-plugin
+----
+
+*deb/rpm*:
+
+Download the .deb or .rpm from the https://github.com/deviceinsight/kafkactl-plugins/releases[releases page] and install with dpkg -i and rpm -i respectively.
+
+*manually*:
+
+Download the pre-compiled binaries from the https://github.com/deviceinsight/kafkactl-plugins/releases[releases page] and copy to the desired location.
+
+=== Compiling from source
+
+[,bash]
+----
+go get -u github.com/deviceinsight/kafkactl-plugins/aws
+----
+
+== Configuration
+
+=== Minimal
+
+The minimal kafkactl configuration needed to use this plugin looks as follows:
+
+[source,yaml]
+----
+contexts:
+    my-context:
+        brokers:
+            - b-1.my-cluster.xxxxxxx.xxx.kafka.eu-west-1.amazonaws.com:9098
+            - b-2.my-cluster.xxxxxxx.xxx.kafka.eu-west-1.amazonaws.com:9098
+        sasl:
+            enabled: true
+            mechanism: oauth
+            tokenprovider:
+                plugin: aws
+                options:
+                  region: eu-west-1
+        tls:
+            enabled: true
+----
+
+Note that you will need to access port `9098` on the brokers or `9198` for public access.
+
+=== EKS Cluster with IAM roles for service accounts (IRSA)
+
+When using an EKS cluster with IAM roles for service accounts (IRSA), please follow [this guide](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html)
+and setup the necessary roles and policies.
+
+Then you can configure kafkactl as follows:
+
+[source,yaml]
+----
+contexts:
+    my-context-k8s:
+        brokers:
+            - b-1.my-cluster.xxxxxxx.xxx.kafka.eu-west-1.amazonaws.com:9098
+            - b-2.my-cluster.xxxxxxx.xxx.kafka.eu-west-1.amazonaws.com:9098
+        kubernetes:
+            enabled: true
+            image: deviceinsight/kafkactl-azure:latest-v5.0.6
+            kubecontext: my-eks-cluster
+            namespace: eks-namespace
+            serviceaccount: irsa
+        sasl:
+            enabled: true
+            mechanism: oauth
+            tokenprovider:
+                plugin: aws
+                options:
+                    region: eu-west-1
+        tls:
+            enabled: true
+----
+
+== Options
+
+
+|===
+|Option | Type | Description
+
+|debug
+|boolean
+|Debug the credential flow
+
+|region
+|string
+|Region of the cluster
+
+|role
+|string
+|IAM role to use for authentication
+
+|profile
+|string
+|Profile to use for authentication
+
+|stsSessionName
+|string
+|Name of the STS session
+
+Example with all options configured:
+
+[source,yaml]
+----
+contexts:
+    my-context:
+        brokers:
+            - b-1.my-cluster.xxxxxxx.xxx.kafka.eu-west-1.amazonaws.com:9098
+            - b-2.my-cluster.xxxxxxx.xxx.kafka.eu-west-1.amazonaws.com:9098
+        sasl:
+            enabled: true
+            mechanism: oauth
+            tokenprovider:
+                plugin: aws
+                options:
+                    region: eu-west-1
+        tls:
+            enabled: true
+----
