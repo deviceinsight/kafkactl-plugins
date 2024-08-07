@@ -41,8 +41,7 @@ release:
   draft: false
 
 brews:
-  -
-    tap:
+  - tap:
       owner: deviceinsight
       name: homebrew-packages
 
@@ -80,16 +79,14 @@ winget:
           branch: master
 
 dockers:
-  -
-    skip_push: false
+  - skip_push: false
     dockerfile: Dockerfile.Ubuntu
     build_flag_templates:
       - "--build-arg=KAFKACTL_VERSION={{ .Env.KAFKACTL_VERSION }}"
     image_templates:
       - "deviceinsight/kafkactl-azure:latest-{{ .Env.KAFKACTL_VERSION }}-ubuntu"
       - "deviceinsight/kafkactl-azure:{{ .Tag }}-{{ .Env.KAFKACTL_VERSION }}-ubuntu"
-  -
-    skip_push: false
+  - skip_push: false
     dockerfile: Dockerfile.Scratch
     build_flag_templates:
       - "--build-arg=KAFKACTL_VERSION={{ .Env.KAFKACTL_VERSION }}"

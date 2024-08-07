@@ -23,7 +23,7 @@ archives:
       - CHANGELOG.md
 
 checksum:
-  name_template: "checksums.txt"
+  name_template: 'checksums.txt'
 nfpms:
   - id: default
     vendor: Device Insight GmbH
@@ -56,7 +56,7 @@ brews:
     dependencies:
       - name: kafkactl
 
-    description: aws Plugin for kafkactl
+    description: AWS Plugin for kafkactl
     skip_upload: false
 
 winget:
