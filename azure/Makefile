@@ -25,7 +25,7 @@ update-dependencies: # update dependencies to latest MINOR.PATCH
 	go get -t -u ./...
 
 lint:
-	golangci-lint run
+	golangci-lint run --config ../.golangci.yml
 
 .PHONY: cve-check
 cve-check:
