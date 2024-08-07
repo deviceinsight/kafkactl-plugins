@@ -31,7 +31,7 @@ type tokenProvider struct {
 
 // Init initializes the tokenProvider with the provided clientID and clientSecret.
 // The provided tokenURL is used to perform the 2 legged client credentials flow.
-func (t *tokenProvider) Init(options map[string]any, brokers []string) (err error) {
+func (t *tokenProvider) Init(options map[string]any, _ []string) (err error) {
 
 	t.logger.Debug("init", "options", options)
 
@@ -97,7 +97,8 @@ func (t *tokenProvider) Token() (string, error) {
 	return t.token, nil
 }
 
-// isTokenExpired checks if the token is expired by decoding the token and checking the 'X-Amz-Expires' param of the token.
+// isTokenExpired checks if the token is expired by decoding the token and checking the 'X-Amz-Expires' param of
+// the token.
 // Inspired by https://github.com/aws/aws-msk-iam-sasl-signer-go/blob/896b3e826e770470727dc53d8154cbf148a07aad/signer/msk_auth_token_provider.go#L227-L251
 func (t *tokenProvider) isTokenExpired() (bool, error) {
 
@@ -116,7 +117,7 @@ func (t *tokenProvider) isTokenExpired() (bool, error) {
 	if d == "" {
 		return true, nil
 	}
-	
+
 	signedAt, err := time.Parse("20060102T150405Z", d)
 	if err != nil {
 		return false, fmt.Errorf("failed to parse the 'X-Amz-Date' param from signed url: %w", err)

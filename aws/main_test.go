@@ -5,7 +5,11 @@ import (
 	"testing"
 )
 
+//nolint:lll
 func TestToken_IsTokenExpired(t *testing.T) {
+
+	t.Parallel()
+
 	type testcase struct {
 		expired bool
 		name    string

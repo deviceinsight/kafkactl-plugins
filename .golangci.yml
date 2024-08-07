@@ -221,3 +221,6 @@ issues:
         - gosec
         - noctx
         - wrapcheck
+    - linters:
+        - lll
+      source: "^// "
