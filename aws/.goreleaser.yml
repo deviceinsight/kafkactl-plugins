@@ -22,8 +22,6 @@ archives:
       - LICENSE.md
       - CHANGELOG.md
 
-checksum:
-  name_template: 'checksums.txt'
 nfpms:
   - id: default
     vendor: Device Insight GmbH
