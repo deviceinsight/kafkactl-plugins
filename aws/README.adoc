@@ -84,7 +84,7 @@ contexts:
             - b-2.my-cluster.xxxxxxx.xxx.kafka.eu-west-1.amazonaws.com:9098
         kubernetes:
             enabled: true
-            image: deviceinsight/kafkactl-azure:latest-v5.0.6
+            image: deviceinsight/kafkactl-azure:latest-v5.1.0
             kubecontext: my-eks-cluster
             namespace: eks-namespace
             serviceaccount: irsa

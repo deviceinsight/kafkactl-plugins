@@ -4,7 +4,7 @@ go 1.22.6
 
 require (
 	github.com/aws/aws-msk-iam-sasl-signer-go v1.0.0
-	github.com/deviceinsight/kafkactl/v5 v5.0.6
+	github.com/deviceinsight/kafkactl/v5 v5.1.0
 	github.com/hashicorp/go-hclog v1.6.3
 	github.com/hashicorp/go-plugin v1.6.1
 )
@@ -40,4 +40,4 @@ require (
 	google.golang.org/protobuf v1.34.2 // indirect
 )
 
-//replace github.com/deviceinsight/kafkactl/v5 v5.0.6 => ../../kafkactl
+//replace github.com/deviceinsight/kafkactl/v5 v5.1.0 => ../../kafkactl
