@@ -8,6 +8,11 @@ on:
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        providers:
+          - aws
+          - azure
     steps:
       -
         name: Checkout
@@ -29,9 +34,9 @@ jobs:
         with:
           version: latest
           args: release --clean --debug
-          workdir: ./azure
+          workdir: ./${{ matrix.providers }}
         env:
-          KAFKACTL_VERSION: v5.0.6
+          KAFKACTL_VERSION: v5.1.0
           # create personal access token: https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 #          AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}

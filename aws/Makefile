@@ -6,7 +6,7 @@ export CGO_ENABLED=0
 export GOOS=linux
 export GO111MODULE=on
 
-program=kafkactl-azure-plugin
+program=kafkactl-aws-plugin
 ld_flags := "-X main.Version=$(VERSION) -X main.GitCommit=$(COMMIT_SHA) -X main.BuildTime=$(BUILD_TS)"
 
 FILES    := $(shell find . -name '*.go' -type f -not -name '*.pb.go' -not -name '*_generated.go' -not -name '*_test.go')
