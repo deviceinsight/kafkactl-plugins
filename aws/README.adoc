@@ -126,7 +126,6 @@ contexts:
 |Name of the STS session
 |===
 
-
 Example with all options configured:
 
 [source,yaml]
