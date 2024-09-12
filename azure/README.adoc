@@ -16,7 +16,7 @@ You can install the pre-compiled binary or compile from source.
 # install tap repostory once
 brew tap deviceinsight/packages
 # install
-brew kafkactl-azure-plugin
+brew install kafkactl-azure-plugin
 # upgrade
 brew upgrade kafkactl-azure-plugin
 ----

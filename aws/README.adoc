@@ -16,7 +16,7 @@ You can install the pre-compiled binary or compile from source.
 # install tap repository once
 brew tap deviceinsight/packages
 # install
-brew kafkactl-aws-plugin
+brew install kafkactl-aws-plugin
 # upgrade
 brew upgrade kafkactl-aws-plugin
 ----
