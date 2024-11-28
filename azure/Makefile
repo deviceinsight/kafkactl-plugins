@@ -1,6 +1,6 @@
 BUILD_TS := $(shell date -Iseconds --utc)
 COMMIT_SHA := $(shell git rev-parse HEAD)
-VERSION := $(shell git describe --abbrev=0 --tags || echo "latest")
+VERSION ?= $(shell git diff --quiet && git describe --exact-match --tags $(COMMIT_SHA) 2>/dev/null || echo "latest")
 
 export CGO_ENABLED=0
 export GOOS=linux

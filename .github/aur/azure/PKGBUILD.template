@@ -8,7 +8,7 @@ url="https://github.com/deviceinsight/kafkactl-plugins/"
 arch=("i686" "x86_64" "aarch64")
 license=("APACHE")
 depends=("glibc")
-makedepends=('go>=1.22')
+makedepends=('go>=1.23')
 optdepends=('kafkactl')
 source=(
   "${pkgname}-${pkgver}.tar.gz::https://github.com/deviceinsight/kafkactl-plugins/archive/v${pkgver}.tar.gz"

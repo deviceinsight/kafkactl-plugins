@@ -1,6 +1,6 @@
 module github.com/deviceinsight/kafkactl-aws-plugin
 
-go 1.22.6
+go 1.23.3
 
 require (
 	github.com/aws/aws-msk-iam-sasl-signer-go v1.0.0
