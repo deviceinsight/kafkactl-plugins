@@ -113,14 +113,14 @@ func (t *tokenProvider) isTokenExpired() (bool, error) {
 	}
 
 	params := parsedURL.Query()
-	d := params.Get("X-Amz-Date")
+	d := params.Get(signer.DateQueryKey)
 	if d == "" {
 		return true, nil
 	}
 
 	signedAt, err := time.Parse("20060102T150405Z", d)
 	if err != nil {
-		return false, fmt.Errorf("failed to parse the 'X-Amz-Date' param from signed url: %w", err)
+		return false, fmt.Errorf("failed to parse the '%s' param from signed url: %w", signer.DateQueryKey, err)
 	}
 
 	e := params.Get(signer.ExpiresQueryKey)

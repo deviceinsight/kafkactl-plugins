@@ -3,7 +3,7 @@ module github.com/deviceinsight/kafkactl-aws-plugin
 go 1.23.3
 
 require (
-	github.com/aws/aws-msk-iam-sasl-signer-go v1.0.0
+	github.com/aws/aws-msk-iam-sasl-signer-go v1.0.4
 	github.com/deviceinsight/kafkactl/v5 v5.4.0
 	github.com/hashicorp/go-hclog v1.6.3
 	github.com/hashicorp/go-plugin v1.6.2
@@ -28,10 +28,8 @@ require (
 	github.com/hashicorp/yamux v0.1.2 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/mitchellh/go-testing-interface v1.14.1 // indirect
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/stretchr/testify v1.9.0 // indirect
 	golang.org/x/net v0.31.0 // indirect
 	golang.org/x/sys v0.27.0 // indirect
 	golang.org/x/text v0.20.0 // indirect
