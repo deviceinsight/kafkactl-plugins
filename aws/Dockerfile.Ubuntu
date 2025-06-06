@@ -1,4 +1,4 @@
 ARG KAFKACTL_VERSION
 FROM deviceinsight/kafkactl:${KAFKACTL_VERSION}-ubuntu
-COPY kafkactl-aws-plugin /usr/local/bin
+COPY kafkactl-aws-plugin /usr/local/bin/
 ENTRYPOINT ["/kafkactl"]
