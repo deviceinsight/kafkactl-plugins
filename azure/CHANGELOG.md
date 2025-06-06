@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+Add `client-id` option for workload identity authentication
+
 ## 1.2.0 - 2024-11-28
 
 ### Fixed
