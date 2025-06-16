@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 1.3.0 - 2025-06-16
+
 - Add `client-id` option for workload identity authentication
 - Fix docker container build
 
