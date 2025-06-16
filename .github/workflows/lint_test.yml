@@ -9,46 +9,34 @@ on:
   pull_request:
 
 jobs:
-  aws-lint:
-    name: aws-lint
+  lint:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v4
-        with:
-          working-directory: aws
-
-  aws-test:
-    name: aws-test
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        providers:
+          - aws
+          - azure
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.24'
-      - name: Run Unit tests
-        run: make test
-        working-directory: ./aws
+          go-version-file: './${{ matrix.providers }}/go.mod'
+      - name: Run Lint
+        working-directory: ./${{ matrix.providers }}
+        run: make lint
 
-  azure-lint:
-    name: azure-lint
+  test:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v4
-        with:
-          working-directory: azure
-
-  azure-test:
-    name: azure-test
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        providers:
+          - aws
+          - azure
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.24'
-      - name: Run Unit tests
+          go-version-file: './${{ matrix.providers }}/go.mod'
+      - name: Run Lint
+        working-directory: ./${{ matrix.providers }}
         run: make test
-        working-directory: ./azure
