@@ -9,6 +9,13 @@ on:
   pull_request:
 
 jobs:
+  kafkactl-version-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run kafkactl-version-check
+        run: make kafkactl-version-check
+
   lint:
     runs-on: ubuntu-latest
     strategy:

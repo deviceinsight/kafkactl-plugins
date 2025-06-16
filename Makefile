@@ -33,6 +33,10 @@ update-dependencies:
 	$(MAKE) -C aws update-dependencies
 	$(MAKE) -C azure update-dependencies
 
+.PHONY: kafkactl-version-check
+kafkactl-version-check:
+	./.github/kafkactl-version-check.sh
+
 # usage make version=1.0.0 release
 #
 # manually executing goreleaser:
