@@ -102,7 +102,11 @@ contexts:
 
 |tenant-id
 |string
-|configure a fixed tenant
+|configure a fixed tenant for Azure CLI and workload identity authentication
+
+|client-id
+|string
+|configure a fixed client id for workload identity authentication
 
 |verbose
 |boolean

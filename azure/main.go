@@ -58,6 +58,11 @@ func (t *tokenProvider) Init(options map[string]any, brokers []string) (err erro
 		tenantID = ""
 	}
 
+	clientID, ok := options["client-id"].(string)
+	if ok {
+		_ = os.Setenv("AZURE_CLIENT_ID", clientID)
+	}
+
 	t.tokenAudience = fmt.Sprintf("%s://%s/.default", eventhubURL.Scheme, eventhubURL.Hostname())
 
 	credential, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
