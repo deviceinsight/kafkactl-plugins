@@ -140,12 +140,6 @@ linters-settings:
     # Default: false
     require-specific: true
 
-  tenv:
-    # The option `all` will run against whole test files (`_test.go`) regardless of method/function signatures.
-    # Otherwise, only methods that take `*testing.T`, `*testing.B`, and `testing.TB` as arguments are checked.
-    # Default: false
-    all: true
-
   copyloopvar:
     check-alias: true
 
@@ -195,7 +189,6 @@ linters:
     - predeclared # finds code that shadows one of Go's predeclared identifiers
     - promlinter # checks Prometheus metrics naming via promlint
     - revive # fast, configurable, extensible, flexible, and beautiful linter for Go, drop-in replacement of golint
-    - tenv # detects using os.Setenv instead of t.Setenv since Go1.17
     - tparallel # detects inappropriate usage of t.Parallel() method in your Go test codes
     - unconvert # removes unnecessary type conversions
     - unparam # reports unused function parameters

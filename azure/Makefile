@@ -18,18 +18,18 @@ all: fmt lint cve-check test build
 
 fmt:
 	gofmt -s -l -w $(FILES) $(TESTS)
-	goimports -l -w $(FILES) $(TESTS)
+	go tool goimports -l -w $(FILES) $(TESTS)
 
 .PHONY: update-dependencies
 update-dependencies: # update dependencies to latest MINOR.PATCH
 	go get -t -u ./...
 
 lint:
-	golangci-lint run --config ../.golangci.yml
+	go tool golangci-lint run --config ../.golangci.yml
 
 .PHONY: cve-check
 cve-check:
-	govulncheck ./...
+	go tool govulncheck ./...
 
 .PHONY: test
 test:

@@ -24,7 +24,7 @@ jobs:
         name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23'
+          go-version: '1.24'
       -
         name: Docker login
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
@@ -36,7 +36,7 @@ jobs:
           args: release --clean --debug
           workdir: ./${{ matrix.providers }}
         env:
-          KAFKACTL_VERSION: v5.1.0
+          KAFKACTL_VERSION: v5.9.0
           # create personal access token: https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 #          AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
