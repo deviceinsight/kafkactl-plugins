@@ -5,7 +5,7 @@ go 1.24.4
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.18.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.10.1
-	github.com/deviceinsight/kafkactl/v5 v5.9.0
+	github.com/deviceinsight/kafkactl/v5 v5.11.0
 	github.com/hashicorp/go-hclog v1.6.3
 	github.com/hashicorp/go-plugin v1.6.3
 )
@@ -66,7 +66,7 @@ require (
 	github.com/go-toolsmith/astp v1.1.0 // indirect
 	github.com/go-toolsmith/strparse v1.1.0 // indirect
 	github.com/go-toolsmith/typep v1.1.0 // indirect
-	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
+	github.com/go-viper/mapstructure/v2 v2.3.0 // indirect
 	github.com/go-xmlfmt/xmlfmt v1.1.3 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gofrs/flock v0.12.1 // indirect
@@ -208,7 +208,7 @@ require (
 	mvdan.cc/unparam v0.0.0-20240528143540-8a5130ca722f // indirect
 )
 
-//replace github.com/deviceinsight/kafkactl/v5 v5.9.0 => ../../kafkactl
+//replace github.com/deviceinsight/kafkactl/v5 v5.11.0 => ../../kafkactl
 
 tool (
 	github.com/golangci/golangci-lint/cmd/golangci-lint
