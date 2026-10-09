@@ -1,0 +1,94 @@
+project_name: kafkactl-gcp-plugin
+
+before:
+  hooks:
+    - go mod download
+builds:
+  - env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X main.Version={{.Tag}} -X main.GitCommit={{.ShortCommit}} -X main.BuildTime={{.Date}}
+    goos:
+      - darwin
+      - linux
+      - windows
+
+archives:
+  - id: default
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE.md
+      - CHANGELOG.md
+
+nfpms:
+  - id: default
+    vendor: Device Insight GmbH
+    homepage: https://www.device-insight.com/
+    maintainer: Dirk Wilden <[dirk.wilden@device-insight.com]>
+    description: GCP Plugin for kafkactl
+    license: Apache 2.0
+
+    formats:
+      - deb
+      - rpm
+
+release:
+  disable: false
+  draft: false
+
+brews:
+  - tap:
+      owner: deviceinsight
+      name: homebrew-packages
+
+    commit_author:
+      name: goreleaserbot
+      email: goreleaser@device-insight.com
+
+    folder: Formula
+
+    homepage: https://www.device-insight.com/
+
+    dependencies:
+      - name: kafkactl
+
+    description: GCP Plugin for kafkactl
+    skip_upload: false
+
+winget:
+  - name: kafkactl-gcp-plugin
+    publisher: deviceinsight
+    short_description: GCP Plugin for kafkactl
+    license: Apache-2.0
+    publisher_support_url: https://github.com/deviceinsight/kafkactl-plugins/issues
+    package_identifier: deviceinsight.kafkactl-gcp-plugin
+    homepage: https://www.device-insight.com/
+    repository:
+      owner: deviceinsight
+      name: winget-pkgs
+      branch: "kafkactl-gcp-plugin-{{.Version}}"
+      pull_request:
+        enabled: true
+        base:
+          owner: microsoft
+          name: winget-pkgs
+          branch: master
+
+dockers:
+  - skip_push: false
+    dockerfile: Dockerfile.Ubuntu
+    build_flag_templates:
+      - "--build-arg=KAFKACTL_VERSION={{ .Env.KAFKACTL_VERSION }}"
+    image_templates:
+      - "deviceinsight/kafkactl-gcp:latest-{{ .Env.KAFKACTL_VERSION }}-ubuntu"
+      - "deviceinsight/kafkactl-gcp:{{ .Tag }}-{{ .Env.KAFKACTL_VERSION }}-ubuntu"
+  - skip_push: false
+    dockerfile: Dockerfile.Scratch
+    build_flag_templates:
+      - "--build-arg=KAFKACTL_VERSION={{ .Env.KAFKACTL_VERSION }}"
+    image_templates:
+      - "deviceinsight/kafkactl-gcp:latest-{{ .Env.KAFKACTL_VERSION }}-scratch"
+      - "deviceinsight/kafkactl-gcp:{{ .Tag }}-{{ .Env.KAFKACTL_VERSION }}-scratch"
+

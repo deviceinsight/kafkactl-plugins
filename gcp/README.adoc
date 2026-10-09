@@ -1,0 +1,142 @@
+= GCP Plugin
+
+The kafkactl gcp plugin allows to configure kafkactl to authenticate against
+https://cloud.google.com/managed-service-for-apache-kafka/docs/overview[Google Cloud Managed Service for Apache Kafka]
+using SASL/OAUTHBEARER.
+It is the equivalent of the `com.google.cloud.hosted.kafka.auth.GcpLoginCallbackHandler` used by Java clients:
+tokens are obtained from https://cloud.google.com/docs/authentication/application-default-credentials[Application Default Credentials],
+which allows passwordless logins with Google identities and service accounts.
+
+== Installation
+
+You can install the pre-compiled binary or compile from source.
+
+=== Install the pre-compiled binary
+
+*homebrew*:
+
+[,bash]
+----
+# install
+brew install kafkactl-gcp-plugin
+# upgrade
+brew upgrade kafkactl-gcp-plugin
+----
+
+*winget*:
+[,bash]
+----
+winget install kafkactl-gcp-plugin
+----
+
+*deb/rpm*:
+
+Download the .deb or .rpm from the https://github.com/deviceinsight/kafkactl-plugins/releases[releases page] and install with dpkg -i and rpm -i respectively.
+
+*manually*:
+
+Download the pre-compiled binaries from the https://github.com/deviceinsight/kafkactl-plugins/releases[releases page] and copy to the desired location.
+
+=== Compiling from source
+
+[,bash]
+----
+go get -u github.com/deviceinsight/kafkactl-plugins/gcp
+----
+
+== Configuration
+
+=== Minimal
+
+The minimal kafkactl configuration needed to use this plugin looks as follows:
+
+[source,yaml]
+----
+contexts:
+    my-context:
+        brokers:
+            - bootstrap.CLUSTER_ID.REGION.managedkafka.PROJECT_ID.cloud.goog:9092
+        sasl:
+            enabled: true
+            mechanism: oauth
+            tokenprovider:
+                plugin: gcp
+        tls:
+            enabled: true
+----
+
+Credentials are resolved in the usual Application Default Credentials order:
+
+* `GOOGLE_APPLICATION_CREDENTIALS` pointing to a service account key or an impersonation configuration
+* user credentials created with `gcloud auth application-default login`
+* the GCE/GKE metadata server (e.g. Workload Identity)
+
+The principal needs the `roles/managedkafka.client` role.
+
+=== GKE Cluster with Workload Identity
+
+When running in GKE with https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity[Workload Identity],
+bind a Kubernetes service account to a Google service account that has the `roles/managedkafka.client` role.
+
+Then you can configure kafkactl as follows:
+
+[source,yaml]
+----
+contexts:
+    my-context-k8s:
+        brokers:
+            - bootstrap.CLUSTER_ID.REGION.managedkafka.PROJECT_ID.cloud.goog:9092
+        kubernetes:
+            enabled: true
+            image: deviceinsight/kafkactl-gcp:latest-v5.11.0
+            kubecontext: my-gke-cluster
+            namespace: gke-namespace
+            serviceaccount: workload-identity-ksa
+        sasl:
+            enabled: true
+            mechanism: oauth
+            tokenprovider:
+                plugin: gcp
+        tls:
+            enabled: true
+----
+
+== How it works
+
+Google Cloud Managed Service for Apache Kafka expects the OAUTHBEARER token to be a JWT-shaped string
+`base64url(header).base64url(payload).base64url(access_token)`, with the header
+`{"typ":"JWT","alg":"GOOG_OAUTH2_TOKEN"}`, a payload containing `exp`, `iat`, `iss` and `sub`
+(the principal's email) and a Google OAuth2 access token as last segment.
+
+The principal is taken from the `principal` option, the service account named in the credentials file,
+the metadata server, or Google's `tokeninfo` endpoint (in that order).
+Tokens are cached and refreshed shortly before they expire.
+
+== Options
+
+|===
+|Option | Type | Description
+
+|principal
+|string
+|Email of the principal used as token subject. Only needed if it cannot be derived from the credentials.
+|===
+
+Example with all options configured:
+
+[source,yaml]
+----
+contexts:
+    my-context:
+        brokers:
+            - bootstrap.CLUSTER_ID.REGION.managedkafka.PROJECT_ID.cloud.goog:9092
+        sasl:
+            enabled: true
+            mechanism: oauth
+            tokenprovider:
+                plugin: gcp
+                options:
+                    principal: my-sa@my-project.iam.gserviceaccount.com
+        tls:
+            enabled: true
+----

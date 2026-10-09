@@ -1,0 +1,4 @@
+ARG KAFKACTL_VERSION
+FROM deviceinsight/kafkactl:${KAFKACTL_VERSION}-ubuntu
+COPY kafkactl-gcp-plugin /usr/local/bin/
+ENTRYPOINT ["/kafkactl"]

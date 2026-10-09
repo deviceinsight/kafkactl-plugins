@@ -1,0 +1,6 @@
+ARG KAFKACTL_VERSION
+FROM deviceinsight/kafkactl:${KAFKACTL_VERSION}-scratch
+WORKDIR /tmp/
+WORKDIR /
+COPY kafkactl-gcp-plugin /usr/local/bin/
+ENTRYPOINT ["/kafkactl"]

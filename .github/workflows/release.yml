@@ -13,6 +13,7 @@ jobs:
         providers:
           - aws
           - azure
+          - gcp
     steps:
       -
         name: Checkout

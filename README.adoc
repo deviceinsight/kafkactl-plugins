@@ -4,4 +4,6 @@ include::azure/README.adoc[leveloffset=+1]
 
 include::aws/README.adoc[leveloffset=+1]
 
+include::gcp/README.adoc[leveloffset=+1]
+
 
